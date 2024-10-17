@@ -1,0 +1,1297 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
+    :root {
+      --border-radius: 2rem;
+      --card-border-radius: 1rem;
+      --btn-padding: 0.6rem 2rem;
+      --search-padding: 0.6rem 1rem;
+      --card-padding: 1rem;
+      --color-white: white;
+      --color-gray: hsl(252, 15%, 65%);
+      --color-light: white;
+      --color-dark: black;
+      --color-primary: white;
+      --color-success: hsl(120, 95%, 60%);
+      --color-danger: hsl(0, 95%, 65%);
+      --color-black: white;
+      --sticky-top-left: 5.4rem;
+      --sticky-top-right: -18rem;
+    }
+    .logo {
+      color: white;
+
+    }
+
+    *,
+    *::before,
+    *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      text-decoration: none;
+      list-style: none;
+      border: 0;
+    }
+
+    body {
+      font-family: "Poppins", sans-serif;
+      color: var(--color-dark);
+      background: linear-gradient(90deg, #d4d3eb, #d1ceec);
+      overflow-x: hidden;
+    }
+
+    input {
+      outline: none;
+    }
+
+    .main {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
+
+    .container {
+      display: flex;
+      justify-content: center;
+      width: 100%;
+      padding: 0 1rem;
+      margin: 0 auto;
+    }
+
+    .profile {
+      display: flex;
+      gap: 5px;
+      align-items: center;
+      padding: 10px 0;
+    }
+
+    .profile-pic {
+      width: 2.7rem;
+      aspect-ratio: 1/1;
+      border-radius: 50%;
+      object-fit: cover;
+      overflow: hidden;
+    }
+
+    img {
+      display: block;
+      width: 100%;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: var(--btn-padding);
+      font-weight: 500;
+      border-radius: var(--border-radius);
+      cursor: pointer;
+      transition: all 300ms ease;
+    }
+
+    .btn:hover {
+      opacity: 0.8;
+    }
+
+    .btn-primary {
+      background: var(--color-primary);
+      color: white;
+    }
+
+    .text-bold {
+      font-weight: 500;
+    }
+
+    .text-muted {
+      color: var(--color-gray);
+    }
+
+    nav {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 10px;
+      width: 100%;
+      padding: 0.7rem 0;
+      position: fixed;
+      top: 0;
+      z-index: 5;
+      background: linear-gradient(90deg, #8986bf, #6757dc);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Added shadow box */
+
+    }
+
+    nav .container {
+      display: flex;
+      align-items: center;  
+      justify-content: space-between;
+    }
+
+    .search-bar {
+      background: var(--color-light);
+      border-radius: var(--border-radius);
+      padding: 0 10px;
+    }
+
+    .search-bar input[type="text"] {
+      background: transparent;
+      width: 30vw;
+      padding: 10px 0;
+    }
+
+    nav .search-bar input[type="text"]::placeholder {
+      color: var(--color-gray);
+    }
+
+    nav .create {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+    }
+
+    main {
+      position: relative;
+      top: 5.4rem;
+    }
+
+    main .container {
+      display: flex;
+      gap: 2rem;
+      position: relative;
+      margin-top: 150px;
+    }
+
+    main .container .left {
+      height: max-content;
+      position: sticky;
+      top: var(--sticky-top-left);
+    }
+
+    main .container .left .profle {
+      padding: var(--card-padding);
+      background: var(--color-white);
+      border-radius: var(--card-border-radius);
+      display: flex;
+      align-items: center;
+      column-gap: 1rem;
+      width: 100%;
+    }
+
+    .middle {
+      width: 100%;
+      height: max-content;
+      max-width: 70%; /* Increased max-width */
+
+    }
+
+    .middle .create-post {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 1rem;
+      background: var(--color-white);
+      padding: 0.4rem var(--card-padding);
+      border-radius: var(--border-radius);
+    }
+
+    .middle .create-post input[type="text"] {
+      justify-self: start;
+      width: 100%;
+      padding-left: 1rem;
+      background: transparent;
+      color: var(--color-dark);
+      margin-right: 1rem;
+    }
+
+    .feeds {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+    }
+
+    /* .feed {
+      width: 32%; 
+      margin-bottom: 20px;
+      background: var(--color-white);
+      border-radius: var(--card-border-radius);
+      padding: var(--card-padding);
+      font-size: 0.85rem;
+      line-height: 1.5;
+      box-shadow: 4px 4px 4px 16px rgba(0, 0, 0, 0.1);
+    } */
+
+    .feed .head {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .feed .user {
+      display: flex;
+      gap: 1rem;
+    }
+
+    .photo {
+      height: 250px;
+      width: 100%;
+    }
+
+    .photo img,
+    .photo iframe {
+      display: block;
+      max-width: 100%;
+      height: 100%;
+    }
+
+    .action-button {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 1.4rem;
+      margin: 0.6rem;
+    }
+
+    .liked-by {
+      display: flex;
+    }
+
+    .liked-by span {
+      width: 1.4rem;
+      height: 1.4rem;
+      display: block;
+      overflow: hidden;
+      border-radius: 50%;
+      border: 2px solid var(--color-white);
+      margin-left: -0.6rem;
+    }
+
+    .liked-by span:first-child {
+      margin: 0;
+    }
+
+    .liked-by p {
+      margin-left: 0.5rem;
+    }
+
+    .right {
+      width: 100%;
+      max-width: 400px;
+      height: max-content;
+      position: sticky;
+      top: var(--sticky-top-right);
+      bottom: 0;
+    }
+
+    .right .friend-requests {
+      margin-top: 1rem;
+    }
+
+    .right .friend-requests h4 {
+      color: var(--color-gray);
+      margin: 1rem 0;
+    }
+
+    .right .request {
+      background: var(--color-white);
+      padding: var(--card-padding);
+      border-radius: var(--card-border-radius);
+      margin-bottom: 0.7rem;
+    }
+
+    .right .request .info {
+      display: flex;
+    }
+
+    .right .request .action {
+      display: flex;
+      gap: 1rem;
+    }
+
+    @media screen and (max-width: 1200px) {
+      .feed {
+        width: 48%;
+      }
+    }
+
+    @media screen and (max-width: 768px) {
+      .feed {
+        width: 100%;
+      }
+    }
+    .image-title {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.circular-image {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.feeds {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.feed {
+  flex: 1 1 calc(25% - 20px); /* Adjust width to allow four cards per row with some gap */
+  width: 35%;
+  height: auto;
+  margin-bottom: 20px;
+  background: var(--color-white);
+  border-radius: var(--card-border-radius);
+  padding: var(--card-padding);
+  font-size: 0.85rem;
+  line-height: 1.5;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  border: 1px solid #d2d3d8; 
+}
+
+@media screen and (max-width: 1200px) {
+  .feed {
+    flex: 1 1 calc(33.333% - 20px); /* Adjust width to allow three cards per row on medium screens */
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .feed {
+    flex: 1 1 100%; /* Full width for small screens */
+  }
+}
+.comments {
+  max-height: 150px; /* Set the desired fixed height */
+  overflow-y: auto; /* Enable vertical scrolling */
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+}
+
+.comment {
+  padding: 5px;
+  border-bottom: 1px solid #ddd;
+}
+
+.comment:last-child {
+  border-bottom: none;
+}
+.header-content {
+    text-align: center;
+    /* margin-top: -35px; */
+    color: white;
+    margin-top: -10px;;
+}
+
+/* Modal Styles */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 2000; /* Increase this value */
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0,0,0,0.4);
+  padding-top: 60px;
+}
+
+
+.modal-content {
+  background-color: #fefefe;
+  margin: 10% auto; /* Increased top margin */
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+  max-width: 500px;
+  box-shadow: 0px 5px 15px rgba(0,0,0,0.3);
+  border-radius: 10px;
+  position: relative; /* Add this */
+  z-index: 2001; /* Add this */
+}
+
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.questionText {
+  width: 100%;
+  height: 150px;
+  margin-top: 10px;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.submitQuestion {
+  margin-top: 10px;
+  padding: 10px 20px;
+  background-color: #6757dc;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.submitQuestion:hover {
+  background-color: #6757dc;
+}
+
+.saveQuestion {
+  margin-right: 400px;
+  padding: 10px 20px;
+  background-color: #6757dc;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.create {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
+    .create a {
+      font-size: 1.5rem;
+      color: #333;
+      transition: color 0.3s ease;
+    }
+
+    .create a:hover {
+      color: #ff4500; /* You can change this color as needed */
+    }
+
+    .create a.bookmark:hover {
+      color: #007bff;
+    }
+
+    .create a.history:hover {
+      color: #28a745;
+    }
+
+    .create a.logout:hover {
+      color: #dc3545;
+    }
+
+    .create a.login:hover {
+      color: #17a2b8;
+    }
+    .header {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content:center;
+        align-items: center;
+        background: linear-gradient(90deg, #bab7ec, #776BCC);
+        color: white;
+        padding: 10px;
+        width: 100%;
+        position: fixed;
+        top: 0;
+        z-index: 1000;
+}
+    .header-content {
+        text-align: center;
+    }
+        .header .logo {
+            display: inline-block;
+            margin: 0 10px;
+        }
+        .header img {
+            vertical-align: middle;
+        }
+
+        .header h1 {
+        font-size: 2em;
+        margin: 0;
+    }
+
+    .header p {
+        margin: 0;
+        font-size: 1em;
+    }
+@media (max-width: 768px) {
+    .header {
+        flex-direction: column;
+    }
+
+    .logo {
+        margin-bottom: 10px;
+    }
+
+    .navbar {
+        margin-top: 20px;
+        z-index: 1000;
+    }
+
+    .navbar button {
+        padding: 8px 12px;
+        font-size: 0.9em;
+    }
+}
+@media (max-width: 480px) {
+    .header h1 {
+        font-size: 1.5em;
+    }
+
+    .header p {
+        font-size: 0.8em;
+    }
+
+    .navbar button {
+        padding: 6px 10px;
+        font-size: 0.8em;
+    }
+}
+    .navbar {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    width: 100%;
+    background: linear-gradient(90deg, #bab7ec, #6a5eca);
+        padding: 5px;
+    margin-top: 10px;
+}
+    .navbar button {
+    color: white;
+    background: none;
+    border: none;
+    padding: 10px 15px;
+    font: inherit;
+    cursor: pointer;
+    text-decoration: none;
+    white-space: nowrap;
+}
+.navbar button:hover {
+    background-color: #ddd;
+    color: black;
+}
+    .navbar button.active {
+    background-color: #ddd;
+    color: black;
+}
+.navbar button i {
+    margin-right: 5px;
+}
+
+
+  </style>
+</head>
+
+<body>
+  <nav>
+      <div class="container">
+          <a href="/fun/"><h2 class="logo">Social</h2></a>
+          <div class="search-bar">
+              <i class="uil uil-search"></i>
+          </div>
+          <div class="create">
+            <a href="/youtube/saved_page/" class="bookmark" title="Saved">
+              <i class="fas fa-bookmark"></i>
+            </a>
+            {% if request.user.is_authenticated %}
+            <a href="/youtube/history/" class="history" title="History">
+              <i class="fas fa-history"></i>
+            </a>
+            <a href="/logout/" class="logout" title="Logout">
+              <i class="fas fa-sign-out-alt"></i>
+            </a>
+            {% else %}
+            <a href="/login/" class="login" title="Login">
+              <i class="fas fa-sign-in-alt"></i>
+            </a>
+            {% endif %}
+          </div>
+      </div>
+      <div class="header">
+
+        <div class="header-content">
+            <h1>SAMAPRAGYA</h1>
+            <p>Empowering with Intelligence</p>
+        </div>
+
+        <div class="container">
+          <a href="/fun/"><h2 class="logo">Social</h2></a>
+          <div class="search-bar">
+              <i class="uil uil-search"></i>
+          </div>
+          <div class="create">
+            <a href="/youtube/saved_page/" class="bookmark" title="Saved">
+              <i class="fas fa-bookmark"></i>
+            </a>
+            {% if request.user.is_authenticated %}
+            <a href="/youtube/history/" class="history" title="History">
+              <i class="fas fa-history"></i>
+            </a>
+            <a href="/logout/" class="logout" title="Logout">
+              <i class="fas fa-sign-out-alt"></i>
+            </a>
+            {% else %}
+            <a href="/login/" class="login" title="Login">
+              <i class="fas fa-sign-in-alt"></i>
+            </a>
+            {% endif %}
+          </div>
+      </div>
+      <div class="navbar">
+        <a href="{% url 'fun' %}" class="button">
+            <button type="button">
+              <i class="fab fa-twitter"></i> Twitter
+            </button>
+        </a>
+          <a href="{% url 'fun' %}" class="button">
+            <button type="button">
+                <i class="fab fa-reddit-alien"></i> Reddit
+            </button>
+        </a>
+        
+        <a href="{% url 'fun' %}" class="button">
+            <button type="button">
+                <i class="fab fa-youtube"></i> YouTube
+            </button>
+        </a>
+        
+        <a href="{% url 'fun' %}" class="button">
+            <button type="button">
+                <i class="fas fa-newspaper"></i> News
+            </button>
+        </a>
+        
+        <a href="{% url 'fun' %}" class="button">
+            <button type="button">
+                <i class="fas fa-play-circle"></i> DailyMotion
+            </button>
+        </a>
+        
+        <a href="{% url 'twitter_scraper_form' %}" class="button">
+            <button type="button">
+                <i class="fas fa-tv"></i> Live Monitoring
+            </button>
+        </a>
+        
+        <a href="{% url 'graph' %}" class="button">
+            <button type="button">
+                <i class="fas fa-chart-bar"></i> Graph
+            </button>
+        </a>
+        
+        <a href="http://androidcamp.com"  class="button">
+            <button type="button">
+                <i class="fas fa-search"></i> Web Search
+            </button>
+        </a>
+        
+        <a href="{% url 'index' %}" class="button">
+            <button type="button">
+                <i class="fab fa-facebook-f"></i> Facebook
+            </button>
+        </a>
+        
+        <a href="{% url 'home' %}"  class="button">
+            <button type="button">
+                <i class="fab fa-instagram"></i> Instagram
+            </button>
+        </a>
+        
+        <a href="{% url 'medium_scraper' %}"  class="button">
+            <button type="button">
+                <i class="fab fa-telegram-plane"></i> Telegram
+            </button>
+        </a>
+        
+        <a href="{% url 'fun' %}"  class="button">
+            <button type="button">
+                <i class="fas fa-home"></i> Home
+            </button>
+        </a>
+        </div>
+    </div>
+  </nav>
+
+
+  <main class="main">
+    <div class="container">
+      <div class="middle">
+        <div class="feeds" style="text-align: center;">
+         {% for video in videos %}
+          <div class="feed">
+            <div class="user">
+              <div class="info">
+                <div class="image-title">
+                  <img src="{% static '/images/youtube (1).png/' %}" alt="Thumbnail" class="circular-image">
+                  <h4>
+                    <p style="font-weight: 600;">{{video.title}}</p>
+                  </h4>
+                </div>
+              </div>
+            </div>
+            <br>
+            <div class="photo">
+              <iframe width="600" height="330" src="https://www.youtube.com/embed/{{video.video_id}}?autoplay=0&mute=0"></iframe>
+            </div>
+            <div class="action-button">
+              <div class="interaction-button"></div>
+              <div class="bookmark" id="submit_button_{{video.video_id}}" style="cursor: pointer">
+                <span><i class="fas fa-bookmark"></i></span>
+                <span class="question-icon" style="cursor: pointer" onclick="openModal('{{video.video_id}}')"><i class="fas fa-question-circle"></i></span>
+              </div>
+              <div id="questionModal_{{video.video_id}}" class="modal">
+                <div class="modal-content">
+                  <form action="/youtube/response/" method="GET" id="questionForm_{{video.video_id}}" onsubmit="submitQuestion(event, '{{video.video_id}}')">
+                    {% csrf_token %}
+                    <span class="close" onclick="closeModal('{{video.video_id}}')">&times;</span>
+                    <h2>Ask a Question </h2>
+                    <h4>{{video.title}}</h4>
+                    <textarea class="questionText" id="questionText_{{video.video_id}}" name="questionText" placeholder="Type your question here..." required></textarea>
+                    <input type="hidden" id="videoTitle_{{video.video_id}}" name="videoTitle" value="{{ video.title }}">
+                    <input type="hidden" id="videoTitle_{{video.video_id}}" name="videoURl" value="{{ video.thumbnail_url }}">
+                    <input type="hidden" id="videoTitle_{{video.video_id}}" name="videoId" value="{{ video.video_id }}">
+                    <button class="submitQuestion" type="submit" id="submitQuestion_{{video.video_id}}">Submit</button>
+                  </form>
+                  <form action="/youtube/savedquestions/" method="GET">
+                    {% csrf_token %}
+                    <button class="saveQuestion" type="submit" id="saveQuestion_{{ video.video_id }}">Saved Questions</button>
+                  </form>
+                  <div id="responseContainer_{{video.video_id}}">
+                    {% if question %}
+                      <p><strong>Q:</strong> {{ question }}</p>
+                    {% endif %}
+                    {% if answer %}
+                      <p><strong>A:</strong> {{ answer }}</p>
+                    {% endif %}
+                    {% if error %}
+                      <p><strong>Error:</strong> {{ error }}</p>
+                    {% endif %}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <form action="/youtube/saved_page/" method="post" id="update_saved_form_{{video.video_id}}">
+            {% csrf_token %}
+            <input type="hidden" name="id" value="{{video.video_id}}">
+            <input type="hidden" name="tittle" value="{{video.title}}">
+            <input type="hidden" name="thumbnail" value="{{video.thumbnail_url}}">
+            <input type="hidden" name="video" value="{{video.video_url}}">
+          </form>
+         {% endfor %}
+
+          {% for types in twitter_tweets %}
+          {% for post in types.tweets %}
+          <div class="feed">
+            <div class="user">
+              <div class="info">
+                <div class="image-title">
+                  <img src="{% static '/images/twitter.png/' %}" alt="Thumbnail" class="circular-image">
+                  <h4>
+                  </h4>
+                </div>
+                <h4 style="text-align: left">ID - {{post.post_id}}</h4>
+                <h4>{{post.date_of_post}}</h4>
+              </div>
+            </div>
+            <div class="photo">
+              <a href={{post.post_url}}><img src="{{post.post_url}}" style="height: 34vh" alt="{{post.post_url}}"></a>
+            </div>
+            <div class="action-button">
+              <div class="interaction-button">
+                <span style="font-size: 15px;"><i class="fas fa-thumbs-up" style="font-size: 19px; margin-right: 5px;"></i>{{post.likes}}</span>
+                <span style="font-size: 15px;"><i class="fas fa-comment" style="font-size: 19px; margin-right: 5px;"></i>{{post.comments}}</span>
+                <span style="font-size: 15px;"><i class="fas fa-eye" style="font-size: 19px; margin-right: 5px;"></i>{{post.views}}</span>
+              </div>
+              <div class="bookmark" id="submit_button_{{post.post_id}}" style="cursor: pointer">
+                <span><i class="fas fa-bookmark"></i></span>
+                <span class="question-icon" style="cursor: pointer" onclick="openModal('{{post.post_id}}')"><i class="fas fa-question-circle"></i></span>
+              </div>
+              <div id="questionModal_{{post.post_id}}" class="modal">
+                <div class="modal-content">
+                  <form action="/youtube/response/" method="GET" id="questionForm_{{post.post_id}}" onsubmit="submitQuestion(event, '{{post.post_id}}')">
+                    {% csrf_token %}
+                    <span class="close" onclick="closeModal('{{post.post_id}}')">&times;</span>
+                    <h2>Ask a Question </h2>
+                    <h4>{{post.tweet}}</h4>
+                    <textarea class="questionText" id="questionText_{{post.post_id}}" name="questionText" placeholder="Type your question here..." required></textarea>
+                    <input type="hidden" id="videoTitle_{{post.post_id}}" name="videoTitle" value="{{post.tweet}}">
+                    <input type="hidden" id="videoTitle_{{post.post_id}}" name="videoURl" value="{{ post.post_url }}">
+                    <button class="submitQuestion" type="submit" id="submitQuestion_{{post.post_id}}">Submit</button>
+                  </form>
+                  <form action="/youtube/savedquestions/" method="GET">
+                    {% csrf_token %}
+                    <button class="saveQuestion" type="submit" id="saveQuestion_{{ post.post_id }}">Saved Questions</button>
+                  </form>
+                  <div id="responseContainer_{{post.post_id}}">
+                    {% if question %}
+                      <p><strong>Q:</strong> {{ question }}</p>
+                    {% endif %}
+                    {% if answer %}
+                      <p><strong>A:</strong> {{ answer }}</p>
+                    {% endif %}
+                    {% if error %}
+                      <p><strong>Error:</strong> {{ error }}</p>
+                    {% endif %}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="caption">
+              <p style="font-weight: 600;">{{post.tweet}}</p>
+            </div>
+            <div class="comments text-muted"></div>
+          </div>
+          <form action="/update_saved/" method="post" id="update_saved_form_{{post.post_id}}">
+            {% csrf_token %}
+            <input type="hidden" name="id" value="{{post.post_id}}">
+            <input type="hidden" name="username" value="{{post.user_name}}">
+            <input type="hidden" name="type" value="{{types.type}}">
+            <input type="hidden" name="keyword" value="{{types.keyword}}">
+            <input type="hidden" name="post_url" value="{{post.post_url}}">
+            <input type="hidden" id="date_of_post" name="date_of_post" value="{{post.date_of_post}}">
+            <input type="hidden" name="likes" value="{{post.likes}}">
+            <input type="hidden" name="comments" value="{{post.comments}}">
+            <input type="hidden" name="views" value="{{post.views}}">
+            <input type="hidden" name="tweet" value="{{post.tweet}}">
+          </form>
+          {% endfor %}
+          {% endfor %}
+
+          {% for posts in tweets %}
+          <div class="feed">
+            <div class="user">
+              <div class="info">
+                <div class="image-title">
+                  <img src="{% static '/images/reddit.png/' %}" alt="Thumbnail" class="circular-image">
+                </div>
+                <h4 style="text-align: left"></h4>
+                <h4>
+                  <p style="font-weight: 600;">{{posts.title}}</p>
+                </h4>
+              </div>
+            </div>
+            <br>
+            <div class="photo">
+              <a href="{{posts.url}}"><img src="{{posts.url}}" style="height: 230px; width: 500px" alt="{{posts.url}}"></a>
+            </div>
+            <div class="action-button">
+              <div class="interaction-button">
+                <span style="font-size: 15px;"><i class="fas fa-thumbs-up" style="font-size: 19px; margin-right: 5px;"></i>{{posts.score}}</span>
+              </div>
+              <div class="bookmark" id="submit_button_{{posts.url}}" style="cursor: pointer">
+                <span><i class="fas fa-bookmark"></i></span>
+                <span class="question-icon" style="cursor: pointer" onclick="openModal('{{posts.url}}')"><i class="fas fa-question-circle"></i></span>
+              </div>
+              <div id="questionModal_{{posts.url}}" class="modal">
+                <div class="modal-content">
+                  <form action="/youtube/response/" method="GET" id="questionForm_{{posts.url}}" onsubmit="submitQuestion(event, '{{posts.url}}')">
+                    {% csrf_token %}
+                    <span class="close" onclick="closeModal('{{posts.url}}')">&times;</span>
+                    <h2>Ask a Question </h2>
+                    <h4>{{posts.title}}</h4>
+                    <textarea class="questionText" id="questionText_{{posts.url}}" name="questionText" placeholder="Type your question here..." required></textarea>
+                    <input type="hidden" id="videoTitle_{{posts.url}}" name="videoTitle" value="{{ posts.title }}">
+                    <input type="hidden" id="videoTitle_{{posts.url}}" name="videoURl" value="{{ posts.url }}">
+                    <input type="hidden" id="videoTitle_{{posts.url}}" name="videoId" value="{{ posts.url }}">
+                    <button class="submitQuestion" type="submit" id="submitQuestion_{{video.video_id}}">Submit</button>
+                  </form>
+                  <form action="/youtube/savedquestions/" method="GET">
+                    {% csrf_token %}
+                    <button class="saveQuestion" type="submit" id="saveQuestion_{{ posts.url }}">Saved Questions</button>
+                  </form>
+                  <div id="responseContainer_{{posts.url}}">
+                    {% if question %}
+                      <p><strong>Q:</strong> {{ question }}</p>
+                    {% endif %}
+                    {% if answer %}
+                      <p><strong>A:</strong> {{ answer }}</p>
+                    {% endif %}
+                    {% if error %}
+                      <p><strong>Error:</strong> {{ error }}</p>
+                    {% endif %}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="caption">
+              <div class="comments" style="display: none; text-align: left;">
+                <h4 style="text-align: center;">Comments</h4>
+                {% for c in posts.comments %}
+                <div class="comment" style="overflow: auto">
+                  <p><strong>{{c.username}}:</strong> {{c.comment}}</p>
+                </div>
+                <br>
+                {% endfor %}
+              </div>
+              <p><a class="show-comments" href="javascript:void(0);" onclick="toggleComments(this)">Show Comments</a></p>
+            </div>
+          </div>
+          <form action="/reddit/reddit_update_saved/" method="post" id="update_saved_form_{{posts.url}}">
+            {% csrf_token %}
+            <input type="hidden" name="title" value="{{posts.title}}">
+            <input type="hidden" name="url" value="{{posts.url}}">
+            <input type="hidden" name="score" value="{{posts.score}}">
+          </form>
+          {% endfor %}
+
+          {% for video1 in daily_videos %}
+          <div class="feed">
+            <div class="user">
+              <div class="info">
+                <div class="image-title">
+                  <img src="{% static '/images/dailymotion (1).png/' %}" alt="Thumbnail" class="circular-image">
+                </div>
+                <h4 style="text-align: left"></h4>
+                <h4>
+                  <p style="font-weight: 600;">{{video1.title}}</p>
+                </h4>
+              </div>
+            </div>
+            <div class="photo">
+              <a href="{{video1.video_url}}"><img src="{{video1.thumbnail_url}}" style="height: 230px; width: 500px" alt="{{video1.video_url}}"></a>
+            </div>
+            <div class="action-button">
+              <div class="interaction-button">
+                <span style="font-size: 15px;"><i class="fas fa-thumbs-up" style="font-size: 19px; margin-right: 5px;"></i>{{video1.likes}}</span>
+                <span style="font-size: 15px;"><i class="fas fa-comment" style="font-size: 19px; margin-right: 5px;"></i>{{video1.comments}}</span>
+                <span style="font-size: 15px;"><i class="fas fa-eye" style="font-size: 19px; margin-right: 5px;"></i>{{video1.views}}</span>
+              </div>
+              <div class="bookmark" id="submit_button_{{video1.video_id}}" style="cursor: pointer">
+                <span><i class="fas fa-bookmark"></i></span>
+                <span class="question-icon" style="cursor: pointer" onclick="openModal('{{video1.video_id}}')"><i class="fas fa-question-circle"></i></span>
+              </div>
+              <div id="questionModal_{{video1.video_id}}" class="modal">
+                <div class="modal-content">
+                  <form action="/youtube/response/" method="GET" id="questionForm_{{video1.video_id}}" onsubmit="submitQuestion(event, '{{video1.video_id}}')">
+                    {% csrf_token %}
+                    <span class="close" onclick="closeModal('{{video1.video_id}}')">&times;</span>
+                    <h2>Ask a Question </h2>
+                    <h4>{{video1.title}}</h4>
+                    <textarea class="questionText" id="questionText_{{video1.video_id}}" name="questionText" placeholder="Type your question here..." required></textarea>
+                    <input type="hidden" id="videoTitle_{{video1.video_id}}" name="videoTitle" value="{{ video1.title }}">
+                    <input type="hidden" id="videoTitle_{{video1.video_id}}" name="videoURl" value="{{ video1.thumbnail_url }}">
+                    <button class="submitQuestion" type="submit" id="submitQuestion_{{video1.video_id}}">Submit</button>
+                  </form>
+                  <form action="/youtube/savedquestions/" method="GET">
+                    {% csrf_token %}
+                    <button class="saveQuestion" type="submit" id="saveQuestion_{{ video1.video_id }}">Saved Questions</button>
+                  </form>
+                  <div id="responseContainer_{{video1.video_id}}">
+                    {% if question %}
+                      <p><strong>Q:</strong> {{ question }}</p>
+                    {% endif %}
+                    {% if answer %}
+                      <p><strong>A:</strong> {{ answer }}</p>
+                    {% endif %}
+                    {% if error %}
+                      <p><strong>Error:</strong> {{ error }}</p>
+                    {% endif %}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <form action="/daily/saved_page/" method="post" id="update_saved_form_{{video1.video_id}}">
+            {% csrf_token %}
+            <input type="hidden" name="id" value="{{video1.video_id}}">
+            <input type="hidden" name="title" value="{{video1.title}}">
+            <input type="hidden" name="thumbnail_url" value="{{video1.thumbnail_url}}">
+            <input type="hidden" name="video_url" value="{{video1.video_url}}">
+            <input type="hidden" name="likes" value="{{video1.likes}}">
+            <input type="hidden" name="comments" value="{{video1.comments}}">
+            <input type="hidden" name="views" value="{{video1.views}}">
+          </form>
+          {% endfor %}
+
+          {% for video in news_videos %}
+         <div class="feed">
+            <div class="user">
+              <div class="info">
+                <div class="image-title">
+                  <img src="{% static '/images/world-news.png/' %}" alt="Thumbnail" class="circular-image">
+                  <h4>
+                    <p style="font-weight: 600;">{{video.title}}</p>
+                  </h4>
+                </div>
+              </div>
+            </div>
+            <br>
+            <div class="photo">
+              <a href={{video.url}}><img src="{{video.image_url}}" style="height: 230px; width: 500px"  alt=""></a>
+            </div>
+            <div class="action-button">
+              <div class="interaction-button"></div>
+              <div class="bookmark" id="submit_button_sibashis{{video.url}}" style="cursor: pointer">
+                <span><i class="fas fa-bookmark"></i></span>
+                <span class="question-icon" style="cursor: pointer" onclick="openModal('{{video.url}}')"><i class="fas fa-question-circle"></i></span>
+              </div>
+              <div id="questionModal_{{video.url}}" class="modal">
+                <div class="modal-content">
+                  <form action="/youtube/response/" method="GET" id="questionForm_{{video.url}}" onsubmit="submitQuestion(event, '{{video.url}}')">
+                    {% csrf_token %}
+                    <span class="close" onclick="closeModal('{{video.url}}')">&times;</span>
+                    <h2>Ask a Question </h2>
+                    <h4>{{video.title}}</h4>
+                    <textarea class="questionText" id="questionText_{{video.url}}" name="questionText" placeholder="Type your question here..." required></textarea>
+                    <input type="hidden" id="videoTitle_{{video.url}}" name="videoTitle" value="{{ video.title }}">
+                    <input type="hidden" id="videoTitle_{{video.url}}" name="videoURl" value="{{ video.image_url}}">
+                    <button class="submitQuestion" type="submit" id="submitQuestion_{{video.url}}">Submit</button>
+                  </form>
+                  <form action="/youtube/savedquestions/" method="GET">
+                    {% csrf_token %}
+                    <button class="saveQuestion" type="submit" id="saveQuestion_{{ video.url }}">Saved Questions</button>
+                  </form>
+                  <div id="responseContainer_{{video.url}}">
+                    {% if question %}
+                      <p><strong>Q:</strong> {{ question }}</p>
+                    {% endif %}
+                    {% if answer %}
+                      <p><strong>A:</strong> {{ answer }}</p>
+                    {% endif %}
+                    {% if error %}
+                      <p><strong>Error:</strong> {{ error }}</p>
+                    {% endif %}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <form action="/news/saved_page/" method="post" id="update_saved_form__sibashis{{video.url}}">
+            
+            {% csrf_token %}
+  
+            <input type="hidden" name="summary" value="{{video.summary}}">
+            <input type="hidden" name="image_url" value="{{video.image_url}}">
+            <input type="hidden" name="content" value={{video.content}}>
+            <input type="hidden" name="url" value={{video.url}}>
+            <input type="hidden" name="source" value={{video.source.name}}>
+            <input type="hidden" name="author" value={{video.author}}>
+  
+          </form>
+         {% endfor %}
+        </div>
+      </div>
+    </div>
+  </main>
+</body>
+
+
+<script>
+
+// document.addEventListener('DOMContentLoaded', function () {
+//       const form = document.querySelector('form');
+//       form.addEventListener('submit', function (event) {
+//           event.preventDefault();
+          
+//           const formData = new FormData(form);
+//           const xhr = new XMLHttpRequest();
+//           xhr.open('GET', form.action + '?' + new URLSearchParams(formData).toString());
+          
+//           xhr.onload = function () {
+//               if (xhr.status === 200) {
+//                   const responseContainer = document.getElementById('responseContainer');
+//                   responseContainer.innerHTML = xhr.responseText;
+//               } else {
+//                   console.error('Request failed. Returned status of ' + xhr.status);
+//               }
+//           };
+          
+//           xhr.send();
+//       });
+//   });
+
+// document.addEventListener('DOMContentLoaded', function() {
+//   // Handle submit event for saving questions
+//   document.querySelectorAll('.saveQuestion').forEach(button => {
+//     button.addEventListener('click', function(event) {
+//       event.preventDefault();
+//       const videoId = button.id.split('_')[1];
+//       const questionText = document.getElementById(`questionText_${videoId}`).value;
+//       const answer = ''; // You can set the answer here if needed
+//       document.querySelector(`#questionModal_${videoId} input[name="questionText"]`).value = questionText;
+//       document.querySelector(`#questionModal_${videoId} input[name="answer"]`).value = answer;
+//       document.querySelector(`#questionModal_${videoId} form[action="/youtube/savequestions/"]`).submit();
+//     });
+//   });
+
+//   // Close modal function
+//   window.closeModal = function(videoId) {
+//     document.getElementById(`questionModal_${videoId}`).style.display = 'none';
+//   };
+// });
+
+
+function submitQuestion(event, videoId) {
+  event.preventDefault();
+  
+  const form = document.getElementById(`questionForm_${videoId}`);
+  const formData = new FormData(form);
+  const url = form.action + '?' + new URLSearchParams(formData).toString();
+  
+  fetch(url)
+    .then(response => response.text())
+    .then(data => {
+      const responseContainer = document.getElementById(`responseContainer_${videoId}`);
+      responseContainer.innerHTML = data;
+    })
+    .catch(error => {
+      console.error('Error:', error);
+    });
+}
+
+  function openModal(videoId) {
+    var modal = document.getElementById("questionModal_" + videoId);
+    modal.style.display = "block";
+}
+
+// Close modal function
+function closeModal(videoId) {
+    var modal = document.getElementById("questionModal_" + videoId);
+    modal.style.display = "none";
+}
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+    if (event.target.classList.contains('modal')) {
+        event.target.style.display = "none";
+    }
+}
+// Get the modal
+// var modal = document.getElementById("questionModal");
+
+// // Get the button that opens the modal
+// var questionIcons = document.getElementsByClassName("question-icon");
+
+// // Get the <span> element that closes the modal
+// var span = document.getElementsByClassName("close")[0];
+
+// // Loop through each question icon and add click event
+// for (var i = 0; i < questionIcons.length; i++) {
+//   questionIcons[i].onclick = function() {
+//     modal.style.display = "block";
+//   }
+// }
+
+// // When the user clicks on <span> (x), close the modal
+// span.onclick = function() {
+//   modal.style.display = "none";
+//   document.getElementById('questionText').value = "";
+// }
+
+// // When the user clicks anywhere outside of the modal, close it
+// window.onclick = function(event) {
+//   if (event.target == modal) {
+//     modal.style.display = "none";
+//     document.getElementById('questionText').value = "";
+//   }
+// }
+
+// Handle submit question button
+// document.getElementById('questionForm').addEventListener('submit', function(event) {
+//   event.preventDefault(); // Prevent the default form submission
+
+//   const questionText = document.getElementById('questionText').value;
+//   const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value; // Get the CSRF token from the form
+
+//   fetch('/youtube/response/', {
+//     method: 'POST',
+//     headers: {
+//       'Content-Type': 'application/json',
+//       'X-CSRFToken': csrfToken // Include the CSRF token in the request header
+//     },
+//     body: JSON.stringify({ questionText: questionText })
+//   })
+//   .then(response => response.json())
+//   .then(data => {
+//     // Update the response container with the answer
+//     const responseContainer = document.getElementById('responseContainer');
+//     responseContainer.innerHTML = `<h3>Your Question</h3><p>${questionText}</p><h3>Answer</h3><p>${data.answer}</p>`;
+//   })
+//   .catch(error => console.error('Error:', error));
+
+//   // Close the modal and reset the textarea
+//   modal.style.display = "none";
+//   document.getElementById('questionText').value = "";
+// });
+
+setTimeout(function() {
+  alert('Monitor Accounts Page Updated! Go check.');
+}, 1800000);
+
+function toggleComments(link) {
+  var comments = link.parentNode.previousElementSibling;
+  if (comments.style.display === "none") {
+    comments.style.display = "block";
+    link.textContent = "Hide Comments";
+  } else {
+    comments.style.display = "none";
+    link.textContent = "Show Comments";
+  }
+}
+
+document.addEventListener("DOMContentLoaded", function() {
+  const submitButtons = document.querySelectorAll("[id^='submit_button_']");
+
+  submitButtons.forEach(submitButton => {
+    submitButton.addEventListener("click", function(event) {
+      event.preventDefault(); // Prevent default form submission
+
+      const postId = submitButton.id.split("_")[2];
+      const postId_news = submitButton.id.split("sibashis")[1]; // Extract post ID from submit button ID
+
+      console.log(postId);
+      console.log(`update_saved_form_${postId}`);
+      const form = document.getElementById(`update_saved_form_${postId}`);
+      const form_news = document.getElementById(`update_saved_form__sibashis${postId_news}`);
+
+      // Ensure we are handling form data correctly
+      const formData = new FormData(form || form_news);  // Choose the correct form
+      const url = (form || form_news).getAttribute("action");
+
+      fetch(url, {
+          method: "POST",
+          body: formData
+      })
+      .then(response => response.json())
+      .then(data => {
+          console.log(data); // Handle response data as needed
+      })
+      .catch(error => {
+          console.error("Error:", error);
+          // alert("Error submitting form. Please try again.");
+      });
+    });
+  });
+});
+
+  </script>
+  
+
+</body>
+
+</html>

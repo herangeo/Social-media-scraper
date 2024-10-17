@@ -1,0 +1,363 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Twitter Scraper Results</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background: linear-gradient(90deg, #C7C5F4, #776BCC);
+        }
+        h1 {
+            color: white;
+            text-align: center;
+        }
+        .tweet-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            margin-top: 100px;
+        }
+        .tweet-card {
+            flex: 0 0 calc(33% - 20px);
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            background-color: white;
+            padding: 15px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+        }
+        .tweet-info {
+            display: flex;
+            flex-direction: column;
+        }
+        .tweet-info p {
+            margin: 5px 0;
+        }
+        .tweet-info strong {
+            font-weight: bold;
+        }
+        .tweet-info a {
+            color: #1DA1F2;
+            text-decoration: none;
+        }
+        .tweet-info a:hover {
+            text-decoration: underline;
+        }
+        .tweet-stats {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
+        .tweet-stats p {
+            margin-right: 10px;
+        }
+        .handle-button-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .handle-button-container p {
+            margin: 0;
+        }
+        .button {
+            background-color: #776BCC;
+            border: none;
+            color: white;
+            padding: 8px 16px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .button img {
+            height: 20px;
+            vertical-align: middle;
+        }
+        .handle {
+            color: white;
+        }
+        .nav-button-container {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            display: flex;
+            gap: 1rem;
+            z-index: 1000;
+        }
+        .nav-button {
+            display: flex;
+            align-items: center;
+            padding: var(--input-padding);
+            color: white;
+            font-size: medium;
+            font-family: 'Times New Roman', Times, serif;
+            font-weight: bold;
+            border: none;
+            border-radius: var(--input-border-radius);
+            cursor: pointer;
+            font-size: var(--input-font-size);
+            text-decoration: none;
+        }
+        .header {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+        background: linear-gradient(90deg, #bab7ec, #776BCC);
+        color: white;
+        padding: 10px;
+        left: -10px;
+        width: 100%;
+        position: fixed;
+        top: 0;
+        z-index: 1000;
+}
+    .header-content {
+        text-align: center;
+    }
+        .header .logo {
+            display: inline-block;
+            margin: 0 10px;
+        }
+        .header img {
+            vertical-align: middle;
+        }
+
+        .header h1 {
+        font-size: 2em;
+        margin: 0;
+    }
+
+    .header p {
+        margin: 0;
+        font-size: 1em;
+    }
+@media (max-width: 768px) {
+    .header {
+        flex-direction: column;
+    }
+
+    .logo {
+        margin-bottom: 10px;
+    }
+
+    .navbar {
+        margin-top: 20px;
+    }
+
+    .navbar button {
+        padding: 8px 12px;
+        font-size: 0.9em;
+    }
+}
+@media (max-width: 480px) {
+    .header h1 {
+        font-size: 1.5em;
+    }
+
+    .header p {
+        font-size: 0.8em;
+    }
+
+    .navbar button {
+        padding: 6px 10px;
+        font-size: 0.8em;
+    }
+}
+    .navbar {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    width: 100%;
+    background: linear-gradient(90deg, #bab7ec, #6a5eca);
+        padding: 5px;
+    margin-top: 10px;
+}
+    .navbar button {
+    color: white;
+    background: none;
+    border: none;
+    padding: 10px 15px;
+    font: inherit;
+    cursor: pointer;
+    text-decoration: none;
+    white-space: nowrap;
+}
+.navbar button:hover {
+    background-color: #ddd;
+    color: black;
+}
+    .navbar button.active {
+    background-color: #ddd;
+    color: black;
+}
+.navbar button i {
+    margin-right: 5px;
+}
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.save-form').forEach(function(form) {
+                form.addEventListener('submit', function(event) {
+                    event.preventDefault();
+                    let twitterHandle = form.querySelector('input[name="twitter_handle"]').value;
+                    saveHandle(twitterHandle);
+                });
+            });
+        });
+
+        function saveHandle(twitterHandle) {
+            fetch("{% url 'save_twitter_handle' %}", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': '{{ csrf_token }}'
+                },
+                body: JSON.stringify({ 'twitter_handle': twitterHandle })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    alert('Username saved successfully!');
+                } else {
+                    alert('Error saving Username.');
+                }
+            });
+        }
+        
+    </script>
+</head>
+<body>
+    <div class="header">
+
+        <div class="header-content">
+            <h1 class="head">SAMAPRAGYA</h1>
+            <p>Empowering with Intelligence</p>
+        </div>
+
+        <div class="navbar">
+            <a href="{% url 'fun' %}" class="button">
+                <button type="button">
+                  <i class="fab fa-twitter"></i> Twitter
+                </button>
+            </a>
+              <a href="{% url 'fun' %}" class="button">
+                <button type="button">
+                    <i class="fab fa-reddit-alien"></i> Reddit
+                </button>
+            </a>
+            
+            <a href="{% url 'fun' %}" class="button">
+                <button type="button">
+                    <i class="fab fa-youtube"></i> YouTube
+                </button>
+            </a>
+            
+            <a href="{% url 'fun' %}" class="button">
+                <button type="button">
+                    <i class="fas fa-newspaper"></i> News
+                </button>
+            </a>
+            
+            <a href="{% url 'fun' %}" class="button">
+                <button type="button">
+                    <i class="fas fa-play-circle"></i> DailyMotion
+                </button>
+            </a>
+            
+            <a href="{% url 'twitter_scraper_form' %}" class="button">
+                <button type="button">
+                    <i class="fas fa-tv"></i> Live Monitoring
+                </button>
+            </a>
+            
+            <a href="{% url 'graph' %}" class="button">
+                <button type="button">
+                    <i class="fas fa-chart-bar"></i> Graph
+                </button>
+            </a>
+            
+            <a href="http://androidcamp.com"  class="button">
+                <button type="button">
+                    <i class="fas fa-search"></i> Web Search
+                </button>
+            </a>
+            
+            <a href="{% url 'index' %}" class="button">
+                <button type="button">
+                    <i class="fab fa-facebook-f"></i> Facebook
+                </button>
+            </a>
+            
+            <a href="{% url 'home' %}"  class="button">
+                <button type="button">
+                    <i class="fab fa-instagram"></i> Instagram
+                </button>
+            </a>
+            
+            <a href="{% url 'medium_scraper' %}"  class="button">
+                <button type="button">
+                    <i class="fab fa-telegram-plane"></i> Telegram
+                </button>
+            </a>
+            
+            <a href="{% url 'fun' %}"  class="button">
+                <button type="button">
+                    <i class="fas fa-home"></i> Home
+                </button>
+            </a>
+            </div>
+    </div>
+    <nav>
+        <div class="nav-button-container">
+            <a href="{% url 'load_saved_handles' %}" class="nav-button">Saved Accounts</a>
+        </div>
+    </nav>
+    <h1>MONITOR ACCOUNT</h1>
+    <br>
+    <div class="tweet-container">
+        {% for user in formatted_tweets %}
+            {% for tweet in user.tweets %}
+                <div class="tweet-card">
+                    <div class="handle-button-container">
+                        <button class="button">
+                            <p class="handle">{{ tweet.TwitterHandle }}</p>
+                        </button>
+                        <form class="save-form">
+                            {% csrf_token %}
+                            <input type="hidden" name="twitter_handle" value="{{ tweet.TwitterHandle }}">
+                            <button type="submit" class="button">
+                                <img src="{% static 'images/save.png' %}" alt="logo"> Save
+                            </button>
+                        </form>
+                    </div>
+                    <div class="tweet-info">
+                        <p><strong>Account:</strong> {{ tweet.UserName }}</p>
+                        <p><strong>Tweet :</strong></p>
+                        <p>{{ tweet.TweetContent }}</p>
+                        <div class="tweet-stats">
+                            <p><strong>Replies:</strong> {{ tweet.Replies }}</p>
+                            <p><strong>Retweets:</strong> {{ tweet.Retweets }}</p>
+                            <p><strong>Likes:</strong> {{ tweet.Likes }}</p>
+                            <p><strong>Views:</strong> {{ tweet.Views }}</p>
+                        </div>
+                        <p><strong>Tweet URL:</strong> <a href="{{ tweet.TweetURL }}" target="_blank">{{ tweet.TweetURL }}</a></p>
+                    </div>
+                </div>
+            {% endfor %}
+        {% endfor %}
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,292 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instagram Data Fetcher</title>
+    <style>
+        
+     @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
+
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(90deg, #C7C5F4, #776BCC);
+        }
+        .container {
+            max-width: 400px;
+            margin: 100px auto 20px;
+            padding: 20px;
+            margin-top: 200px;
+        }
+        h2 {
+            color: #405de6;
+            text-align: center;
+        }
+        form {
+            background-color: #fff;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        input[type="text"],
+        input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #666;
+        }
+        button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background-color: #7b78b7;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #3251b8;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: linear-gradient(90deg, #bab7ec, #776BCC);
+            padding: 1rem 2rem;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 10;
+            height: 80px;
+        }
+        .header-content {
+            text-align: center;
+            color: white;
+            flex-grow: 1;
+        }
+        .header-content h1 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+        .header-content p {
+            font-size: 1rem;
+            margin: 0;
+        }
+        .logo img {
+            width: 60px;
+            height: 60px;
+        }
+        .header {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: center;
+        background: linear-gradient(90deg, #bab7ec, #776BCC);
+        color: white;
+        padding: 10px;
+        width: 100%;
+        position: fixed;
+        top: 0;
+        z-index: 1000;
+}
+    .header-content {
+        text-align: center;
+    }
+        .header .logo {
+            display: inline-block;
+            margin: 0 10px;
+        }
+        .header img {
+            vertical-align: middle;
+        }
+
+        .header h1 {
+        font-size: 2em;
+        margin: 0;
+    }
+
+    .header p {
+        margin: 0;
+        font-size: 1em;
+    }
+@media (max-width: 768px) {
+    .header {
+        flex-direction: column;
+    }
+
+    .logo {
+        margin-bottom: 10px;
+    }
+
+    .navbar {
+        margin-top: 20px;
+    }
+
+    .navbar button {
+        padding: 8px 12px;
+        font-size: 0.9em;
+    }
+}
+@media (max-width: 480px) {
+    .header h1 {
+        font-size: 1.5em;
+    }
+
+    .header p {
+        font-size: 0.8em;
+    }
+
+    .navbar button {
+        padding: 6px 10px;
+        font-size: 0.8em;
+    }
+}
+    .navbar {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    width: 100%;
+    background: linear-gradient(90deg, #bab7ec, #6a5eca);
+        padding: 5px;
+    margin-top: 10px;
+}
+    .navbar button {
+    color: white;
+    background: none;
+    border: none;
+    padding: 10px 15px;
+    font: inherit;
+    cursor: pointer;
+    text-decoration: none;
+    white-space: nowrap;
+}
+.navbar button:hover {
+    background-color: #ddd;
+    color: black;
+}
+    .navbar button.active {
+    background-color: #ddd;
+    color: black;
+}
+.navbar button i {
+    margin-right: 5px;
+}
+.navbar a {
+    text-decoration: none;
+    color: inherit;
+}
+
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo">
+            <img src="{% static '/images/mainlogo.png/' %}" alt="Logo" style="width:60px; height:60px;">
+        </div>
+        <div class="header-content">
+            <h1 class="head">SAMAPRAGYA</h1>
+            <p>Empowering with Intelligence</p>
+        </div>
+        <div class="logo">
+            <img src="{% static '/images/mainlogo.png/' %}" alt="Logo" style="width:60px; height:60px;">
+        </div>
+        <div class="navbar">
+            <a href="{% url 'fun' %}" class="button">
+                <button type="button">
+                  <i class="fab fa-twitter"></i> Twitter
+                </button>
+            </a>
+              <a href="{% url 'fun' %}" class="button">
+                <button type="button">
+                    <i class="fab fa-reddit-alien"></i> Reddit
+                </button>
+            </a>
+            
+            <a href="{% url 'fun' %}" class="button">
+                <button type="button">
+                    <i class="fab fa-youtube"></i> YouTube
+                </button>
+            </a>
+            
+            <a href="{% url 'fun' %}" class="button">
+                <button type="button">
+                    <i class="fas fa-newspaper"></i> News
+                </button>
+            </a>
+            
+            <a href="{% url 'fun' %}" class="button">
+                <button type="button">
+                    <i class="fas fa-play-circle"></i> DailyMotion
+                </button>
+            </a>
+            
+            <a href="{% url 'twitter_scraper_form' %}" class="button">
+                <button type="button">
+                    <i class="fas fa-tv"></i> Live Monitoring
+                </button>
+            </a>
+            
+            <a href="{% url 'graph' %}" class="button">
+                <button type="button">
+                    <i class="fas fa-chart-bar"></i> Graph
+                </button>
+            </a>
+            
+            <a href="http://androidcamp.com"  class="button">
+                <button type="button">
+                    <i class="fas fa-search"></i> Web Search
+                </button>
+            </a>
+            
+            <a href="{% url 'index' %}" class="button">
+                <button type="button">
+                    <i class="fab fa-facebook-f"></i> Facebook
+                </button>
+            </a>
+            
+            <a href="{% url 'home' %}"  class="button">
+                <button type="button">
+                    <i class="fab fa-instagram"></i> Instagram
+                </button>
+            </a>
+            
+            <a href="{% url 'medium_scraper' %}"  class="button">
+                <button type="button">
+                    <i class="fab fa-telegram-plane"></i> Telegram
+                </button>
+            </a>
+            
+            <a href="{% url 'fun' %}"  class="button">
+                <button type="button">
+                    <i class="fas fa-home"></i> Home
+                </button>
+            </a>
+            </div>
+        
+    </div>
+    <div class="container">
+        <form action="{% url 'home' %}" method="post">
+            {% csrf_token %}
+            <input type="text" name="username" placeholder="Enter Instagram Username" required>
+            <!-- <label for="resultsLimit">Results Limit:</label> -->
+            <input type="number" id="resultsLimit" name="resultsLimit" placeholder="Results Limit" value="2" min="1" max="10" required>
+            <button type="submit">Fetch Data</button>
+        </form>
+    </div>
+</body>
+</html>

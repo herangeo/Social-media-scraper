@@ -1,0 +1,375 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JSON Data</title>
+  <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
+
+    html {
+      background: linear-gradient(90deg, #d4d3eb, #d1ceec);
+      font-family: 'Roboto', sans-serif;
+      -webkit-font-smoothing: antialiased;
+      padding: 20px 0;
+    }
+
+    header {
+      color: white;
+      padding: 10px 0;
+      text-align: center;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 24px;
+    }
+
+    .search-bar {
+      margin: 10px auto;
+      max-width: 400px;
+      display: flex;
+    }
+
+    .search-bar input {
+      width: 100%;
+      padding: 10px;
+      border: none;
+      border-radius: 4px 0 0 4px;
+    }
+
+    .search-bar button {
+      padding: 10px;
+      border: none;
+      background: #060606;
+      color: white;
+      cursor: pointer;
+      border-radius: 0 4px 4px 0;
+    }
+
+    .band {
+      width: 90%;
+      max-width: 1240px;
+      margin: 20px auto;
+      display: grid;
+      grid-template-columns: 1fr;
+      grid-template-rows: auto;
+      grid-gap: 20px;
+      margin-top: 100px;
+    }
+
+    @media only screen and (min-width: 500px) {
+      .band {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media only screen and (min-width: 850px) {
+      .band {
+        grid-template-columns: 1fr 1fr 1fr 1fr;
+      }
+    }
+
+    .card {
+      min-height: 100%;
+      height: 400px; /* Fixed height for the card */
+      background: white;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      display: flex;
+      flex-direction: column;
+      text-decoration: none;
+      color: #444;
+      position: relative;
+      top: 0;
+      transition: all .1s ease-in;
+      overflow: hidden; /* Ensure content does not overflow */
+    }
+
+    .card:hover {
+      top: -2px;
+      box-shadow: 0 4px 5px rgba(0,0,0,0.2);
+    }
+
+    .card article {
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      overflow-y: auto; /* Enable vertical scrolling */
+      flex-grow: 1; /* Allow content to grow within the remaining space */
+    }
+
+    .card .thumb {
+      height: 180px; /* Fixed height for the thumbnail */
+      background-size: cover;
+      background-position: center center;
+      flex-shrink: 0; /* Prevent the thumbnail from shrinking */
+    }
+
+    .card p {
+      margin: 0 0 10px 0;
+      font-size: 14px;
+      line-height: 1.4;
+      word-wrap: break-word;
+    }
+
+    .card h1 {
+      font-size: 18px;
+      margin: 0 0 10px 0;
+      color: #333;
+    }
+
+    .card a {
+      word-break: break-all;
+    }
+
+    h1 {
+      font-size: 20px;
+      margin: 0;
+      color: white;
+    }
+
+    .card span {
+      font-size: 12px;
+      font-weight: bold;
+      color: #999;
+      text-transform: uppercase;
+      letter-spacing: .05em;
+      margin: 2em 0 0 0;
+    }
+    .header {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: center;
+        background: linear-gradient(90deg, #bab7ec, #776BCC);
+        color: white;
+        padding: 10px;
+        width: 100%;
+        position: fixed;
+        top: 0;
+        z-index: 1000;
+}
+    .header-content {
+        text-align: center;
+    }
+        .header .logo {
+            display: inline-block;
+            margin: 0 10px;
+        }
+        .header img {
+            vertical-align: middle;
+        }
+
+        .header h1 {
+        font-size: 2em;
+        margin: 0;
+    }
+
+    .header p {
+        margin: 0;
+        font-size: 1em;
+    }
+@media (max-width: 768px) {
+    .header {
+        flex-direction: column;
+    }
+
+    .logo {
+        margin-bottom: 10px;
+    }
+
+    .navbar {
+        margin-top: 20px;
+    }
+
+    .navbar button {
+        padding: 8px 12px;
+        font-size: 0.9em;
+    }
+}
+@media (max-width: 480px) {
+    .header h1 {
+        font-size: 1.5em;
+    }
+
+    .header p {
+        font-size: 0.8em;
+    }
+
+    .navbar button {
+        padding: 6px 10px;
+        font-size: 0.8em;
+    }
+}
+    .navbar {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    width: 100%;
+    background: linear-gradient(90deg, #bab7ec, #6a5eca);
+        padding: 5px;
+    margin-top: 10px;
+}
+    .navbar button {
+    color: white;
+    background: none;
+    border: none;
+    padding: 10px 15px;
+    font: inherit;
+    cursor: pointer;
+    text-decoration: none;
+    white-space: nowrap;
+}
+.navbar button:hover {
+    background-color: #ddd;
+    color: black;
+}
+    .navbar button.active {
+    background-color: #ddd;
+    color: black;
+}
+.navbar button i {
+    margin-right: 5px;
+}
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="logo">
+        <img src="{% static '/images/mainlogo.png/' %}" alt="Logo" style="width:60px; height:60px;">
+    </div>
+    <div class="header-content">
+        <h1>SAMAPRAGYA</h1>
+        <p>Empowering with Intelligence</p>
+    </div>
+    <div class="logo">
+        <img src="{% static '/images/mainlogo.png/' %}" alt="Logo" style="width:60px; height:60px;">
+    </div>
+    <div class="navbar">
+      <a href="{% url 'fun' %}" class="button">
+          <button type="button">
+            <i class="fab fa-twitter"></i> Twitter
+          </button>
+      </a>
+        <a href="{% url 'fun' %}" class="button">
+          <button type="button">
+              <i class="fab fa-reddit-alien"></i> Reddit
+          </button>
+      </a>
+      
+      <a href="{% url 'fun' %}" class="button">
+          <button type="button">
+              <i class="fab fa-youtube"></i> YouTube
+          </button>
+      </a>
+      
+      <a href="{% url 'fun' %}" class="button">
+          <button type="button">
+              <i class="fas fa-newspaper"></i> News
+          </button>
+      </a>
+      
+      <a href="{% url 'fun' %}" class="button">
+          <button type="button">
+              <i class="fas fa-play-circle"></i> DailyMotion
+          </button>
+      </a>
+      
+      <a href="{% url 'twitter_scraper_form' %}" class="button">
+          <button type="button">
+              <i class="fas fa-tv"></i> Live Monitoring
+          </button>
+      </a>
+      
+      <a href="{% url 'graph' %}" class="button">
+          <button type="button">
+              <i class="fas fa-chart-bar"></i> Graph
+          </button>
+      </a>
+      
+      <a href="http://androidcamp.com"  class="button">
+          <button type="button">
+              <i class="fas fa-search"></i> Web Search
+          </button>
+      </a>
+      
+      <a href="{% url 'index' %}" class="button">
+          <button type="button">
+              <i class="fab fa-facebook-f"></i> Facebook
+          </button>
+      </a>
+      
+      <a href="{% url 'home' %}"  class="button">
+          <button type="button">
+              <i class="fab fa-instagram"></i> Instagram
+          </button>
+      </a>
+      
+      <a href="{% url 'medium_scraper' %}"  class="button">
+          <button type="button">
+              <i class="fab fa-telegram-plane"></i> Telegram
+          </button>
+      </a>
+      
+      <a href="{% url 'fun' %}"  class="button">
+          <button type="button">
+              <i class="fas fa-home"></i> Home
+          </button>
+      </a>
+      </div>
+</div>
+  <header>
+    <div class="search-bar">
+      <input type="text" id="search-input" placeholder="Search...">
+      <button type="button" id="search-button">Go</button>
+    </div>
+  </header>
+  <div class="band" id="card-container">
+    {% for item in data %}
+      <div class="card" data-title="{{ item.videoTitle }}" data-question="{{ item.question }}" data-answer="{{ item.answer }}">
+        <div class="thumb">
+          <a href="{{item.videoUrl}}"><img src="{{item.videoUrl}}" style="height: 180px; width: 300px" alt=""></a>
+        </div>
+        <article>
+          <h1>{{ item.videoTitle }}</h1>
+          <p><strong></strong> <a href="{{ item.videoUrl }}" target="_blank">{{ item.videoUrl }}</a></p>
+          <p><strong>Q:</strong> {{ item.question }}</p>
+          <p><strong>A:</strong> {{ item.answer }}</p>
+        </article>
+      </div>
+    {% endfor %}
+    {% if data.0.error %}
+      <p>{{ data.0.error }}</p>
+    {% endif %}
+  </div>
+
+  <script>
+    document.getElementById('search-button').addEventListener('click', function() {
+      filterCards();
+    });
+
+    document.getElementById('search-input').addEventListener('input', function() {
+      filterCards();
+    });
+
+    function filterCards() {
+      var searchInput = document.getElementById('search-input').value.toLowerCase();
+      var cards = document.querySelectorAll('.card');
+
+      cards.forEach(function(card) {
+        var title = card.getAttribute('data-title').toLowerCase();
+        var question = card.getAttribute('data-question').toLowerCase();
+        var answer = card.getAttribute('data-answer').toLowerCase();
+
+        if (searchInput === "" || title.includes(searchInput) || question.includes(searchInput) || answer.includes(searchInput)) {
+          card.style.display = 'block';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
+  </script>
+</body>
+</html>

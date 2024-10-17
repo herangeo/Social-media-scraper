@@ -1,0 +1,479 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Advanced Search</title>
+
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://bootstrap-tagsinput.github.io/bootstrap-tagsinput/dist/bootstrap-tagsinput.css">
+
+
+  <style>
+    nav {
+      width: 100%;
+      padding: 0.7rem 0;
+      position: fixed;
+      top: 0;
+      z-index: 10;
+      background: var(--color-white);
+    }
+
+    nav .container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .search-bar {
+      background: var(--color-light);
+      border-radius: var(--border-radius);
+      padding: 0 10px;
+    }
+
+    .search-bar input[type="text"] {
+      background: transparent;
+      width: 30vw;
+      padding: 10px 0;
+    }
+
+    nav .search-bar input[type="text"]::placeholder {
+      color: var(--color-gray);
+    }
+
+    nav .create {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+    }
+
+
+    .search-box {
+      max-width: 600px;
+      margin: 0 auto;
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+
+      margin-top: 15vh;
+    }
+
+    .search-box input[type="number"],
+    .search-box input[type="text"],
+    .search-box select {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+
+    .search-box label {
+      font-weight: bold;
+    }
+
+    .search-box button {
+      display: inline-block;
+      background-color: #007bff;
+      color: #fff;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background-color 0.3s;
+    }
+
+    .search-box button:hover {
+      background-color: #0056b3;
+    }
+
+    .search-box button:active {
+      transform: translateY(1px);
+    }
+
+    .search-box select {
+      height: 48px;
+    }
+
+    .search-box h2 {
+      margin-top: 0;
+      color: #333;
+    }
+
+
+
+
+
+    :root {
+      --border-radius: 2rem;
+      --card-border-radius: 1rem;
+      --btn-padding: 0.6rem 2rem;
+      --search-padding: 0.6rem 1rem;
+      --card-padding: 1rem;
+      --color-white: hsl(252, 30%, 100%);
+      --color-gray: hsl(252, 15%, 65%);
+      --color-light: hsl(252, 30%, 90%);
+      --color-dark: hsl(252, 30%, 17%);
+      --color-primary: hsl(252, 75%, 60%);
+      --color-success: hsl(120, 95%, 60%);
+      --color-danger: hsl(0, 95%, 65%);
+      --color-black: hsl(252, 30%, 10%);
+      --sticky-top-left: 5.4rem;
+      --sticky-top-right: -18rem;
+    }
+
+    *,
+    *::before,
+    *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      text-decoration: none;
+      list-style: none;
+      border: 0;
+    }
+
+
+
+    input {
+      outline: none;
+    }
+
+    .main {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
+
+    .container {
+      display: flex;
+      justify-content: center;
+      width: 100%;
+      padding: 0 1rem;
+      margin: 0 auto;
+    }
+
+    .profile {
+      display: flex;
+      gap: 5px;
+      align-items: center;
+      padding: 10px 0;
+    }
+
+    .profile-pic {
+      width: 2.7rem;
+      aspect-ratio: 1/1;
+      border-radius: 50%;
+      object-fit: cover;
+      overflow: hidden;
+    }
+
+    img {
+      display: block;
+      width: 100%;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: var(--btn-padding);
+      font-weight: 500;
+      border-radius: var(--border-radius);
+      cursor: pointer;
+      transition: all 300ms ease;
+    }
+
+    .btn:hover {
+      opacity: 0.8;
+    }
+
+    .btn-primary {
+      background: var(--color-primary);
+      color: white;
+    }
+
+    .text-bold {
+      font-weight: 500;
+    }
+
+    .text-muted {
+      color: var(--color-gray);
+    }
+
+
+    /* loader css */
+
+
+    
+    @import url("https://fonts.googleapis.com/css?family=Oxygen:700&display=swap");
+
+
+#loading-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgb(48 44 44 / 80%);
+    /* Semi-transparent white background */
+    z-index: 9999;
+    /* Ensure it's on top of other content */
+    display: none;
+    /* Hide initially */
+    backdrop-filter: blur(1px);
+    /* Apply blur effect to the background */
+}
+
+#loading-container.active {
+    display: flex;
+    /* Show loading container when active */
+}
+
+.content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+
+@keyframes loadingAnimation {
+    0% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-10px);
+    }
+
+    100% {
+        transform: translateY(0);
+    }
+}
+
+
+body {
+    margin: 0;
+}
+
+.content .loading {
+    width: 80px;
+    height: 50px;
+    position: relative;
+}
+
+.content .loading p {
+    top: 0;
+    padding: 0;
+    margin: 0;
+    color: #5389a6;
+    font-family: "Oxygen", sans-serif;
+    animation: text 3.5s ease both infinite;
+    font-size: 12px;
+    letter-spacing: 1px;
+}
+
+@keyframes text {
+    0% {
+        letter-spacing: 1px;
+        transform: translateX(0px);
+    }
+
+    40% {
+        letter-spacing: 2px;
+        transform: translateX(26px);
+    }
+
+    80% {
+        letter-spacing: 1px;
+        transform: translateX(32px);
+    }
+
+    90% {
+        letter-spacing: 2px;
+        transform: translateX(0px);
+    }
+
+    100% {
+        letter-spacing: 1px;
+        transform: translateX(0px);
+    }
+}
+
+.content .loading span {
+    background-color: #5389a6;
+    border-radius: 50px;
+    display: block;
+    height: 16px;
+    width: 16px;
+    bottom: 0;
+    position: absolute;
+    transform: translateX(64px);
+    animation: loading 3.5s ease both infinite;
+}
+
+.content .loading span:before {
+    position: absolute;
+    content: "";
+    width: 100%;
+    height: 100%;
+    background-color: #a6dcee;
+    border-radius: inherit;
+    animation: loading2 3.5s ease both infinite;
+}
+
+@keyframes loading {
+    0% {
+        width: 16px;
+        transform: translateX(0px);
+    }
+
+    40% {
+        width: 100%;
+        transform: translateX(0px);
+    }
+
+    80% {
+        width: 16px;
+        transform: translateX(64px);
+    }
+
+    90% {
+        width: 100%;
+        transform: translateX(0px);
+    }
+
+    100% {
+        width: 16px;
+        transform: translateX(0px);
+    }
+}
+
+@keyframes loading2 {
+    0% {
+        transform: translateX(0px);
+        width: 16px;
+    }
+
+    40% {
+        transform: translateX(0%);
+        width: 80%;
+    }
+
+    80% {
+        width: 100%;
+        transform: translateX(0px);
+    }
+
+    90% {
+        width: 80%;
+        transform: translateX(15px);
+    }
+
+    100% {
+        transform: translateX(0px);
+        width: 16px;
+    }
+}
+
+  </style>
+</head>
+
+<body>
+
+
+  <div id="content">
+
+    <nav>
+      <div class="container">
+        <a href="/fun/"><h2 class="logo">Social</h2></a>
+        <div class="search-bar">
+          <i class="uil uil-search"></i>
+        </div>
+        <div class="create">
+        <!-- <label class="btn btn-primary" for="create-post">Create</label> -->
+
+        <a href="/youtube/saved_page/"><img src="{% static '/images/save.png/' %}" alt="" style="height: 6vh; width: 3vw;"></a>
+
+        {% if request.user.is_authenticated %}
+        <a href="/youtube/history/"><img src="{% static '/images/history.png/' %}" alt="" style="height: 7vh; width: 3vw;"></a>
+        {% endif %}
+
+        {% if request.user.is_authenticated %}
+        <a href="/logout/"><img src="{% static '/images/logout.png/' %}" alt="" style="height: 7vh; width: 3vw;"></a>
+        {% else %}
+        <a href="/login/"><img src="{% static '/images/enter.png/' %}" alt="" style="height: 6vh; width: 3vw;"></a>
+        {% endif %}
+        </div>
+      </div>
+    </nav>
+  
+  
+    <div class="search-box">
+      <h2>Youtube Search</h2>
+      <form id="searchForm" action="/youtube/" method="post">
+        {% csrf_token %}
+        <div>
+          <label for="tweets">Total Results:</label>
+          <input type="number" id="tweets" name="no_res" min="0" placeholder="Enter total results..." required>
+        </div>
+
+        <div>
+          <label for="comments">Enter Queary:</label>
+          <input type="text" id="comments" name="queary" min="0" placeholder="Enter Queary..." required>
+        </div>
+
+        <button type="submit" id="search-button" >Search</button>
+      </form>
+    </div>
+
+  </div>
+
+
+  <div id="loading-container">
+
+    <div class="content">
+        <div class="loading">
+            <p>loading</p>
+            <span></span>
+        </div>
+    </div>
+  </div>
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script src="https://bootstrap-tagsinput.github.io/bootstrap-tagsinput/dist/bootstrap-tagsinput.min.js"></script>
+
+
+  <script>
+    
+    window.addEventListener('load', function () {
+
+      var loadingContainer = document.getElementById('loading-container');
+      var searchButton = document.getElementById('search-button');
+
+      // Function to show loading animation
+      function showLoadingAnimation() {
+          loadingContainer.style.display = 'block';
+      }
+
+      // Event listener for the search button click
+      searchButton.addEventListener('click', function () {
+          showLoadingAnimation();
+      });
+  });
+
+  </script>
+
+
+</body>
+
+</html>

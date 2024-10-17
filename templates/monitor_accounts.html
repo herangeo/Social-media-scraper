@@ -1,0 +1,425 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Twitter Scraper</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@700&display=swap');
+        
+        :root {
+            --arrow-bg: rgba(255, 255, 255, 0.3);
+            --arrow-icon: url(https://upload.wikimedia.org/wikipedia/commons/9/9d/Caret_down_font_awesome_whitevariation.svg);
+            --option-bg: white;
+            --select-bg: rgba(255, 255, 255, 0.2);
+            --input-bg: white;
+            --input-color: black;
+            --input-border-radius: 0.5em;
+            --input-padding: 1rem;
+            --input-font-size: 1.2rem;
+            --input-placeholder-color: rgba(27, 23, 23, 0.7);
+        }
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            position: relative;
+            overflow: hidden;
+
+        }
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, #C7C5F4, #776BCC);
+            background-size: cover;
+            filter: blur(10px);
+            z-index: -1;
+        }
+        .select-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        /* Styles for input fields */
+        input[type="number"],
+        input[type="text"] {
+            width: 25rem;
+            padding: var(--input-padding);
+            background: var(--input-bg);
+            color: var(--input-color);
+            border: none;
+            border-radius: var(--input-border-radius);
+            box-shadow: 0 0 1em 0 rgba(0, 0, 0, 0.2);
+            font-size: var(--input-font-size);
+            margin-bottom: 1rem;
+            outline: none;
+        }
+        input[type="number"]::placeholder,
+        input[type="text"]::placeholder {
+            color: var(--input-placeholder-color);
+        }
+        /* Styles for select element */
+        select {
+            appearance: none;
+            border: 0;
+            outline: 0;
+            font: inherit;
+            width: 25rem;
+            padding: var(--input-padding);
+            background: var(--arrow-icon) no-repeat right 1em center / 1.5em, linear-gradient(to left, var(--arrow-bg) 3em, var(--select-bg) 3em);
+            color: white;
+            border-radius: var(--input-border-radius);
+            box-shadow: 0 0 1em 0 rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            font-size: var(--input-font-size);
+            margin-bottom: 1rem;
+        }
+        select::-ms-expand {
+            display: none;
+        }
+        select:focus {
+            outline: none;
+        }
+        select option {
+            color: black;
+            background-color: var(--option-bg);
+        }
+        /* Styles for button */
+        .btn {
+            padding: var(--input-padding);
+            background-color: white;
+            color: black;
+            font-weight: bold;
+            border: none;
+            border-radius: var(--input-border-radius);
+            cursor: pointer;
+            box-shadow: 0 0 1em 0 rgba(0, 0, 0, 0.2);
+            font-size: var(--input-font-size);
+        }
+        .btn:hover {
+            background-color: black;
+            color: white;
+        }
+        /* Navigation button styles */
+
+        /* Additional style for checkbox labels with text border */
+        label {
+            color: white;
+            text-shadow: 
+                -1px -1px 0 #6e6464,  
+                 1px -1px 0 #6e6464,
+                 -1px  1px 0 #6e6464,
+                  1px  1px 0 #6e6464;
+        }
+        /* Heading style */
+        .heading {
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 3rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 3rem;
+            text-align: center;
+        }
+        .nav-button-container {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    display: flex;
+    gap: 1rem;
+    z-index: 1000;
+}
+
+.nav-button {
+    display: flex;
+    align-items: center;
+    padding: var(--input-padding);
+    /* background-color: white; */
+    color: white;
+    font-family:'Times New Roman', Times, serif;
+
+    font-weight: bold;
+    border: none;
+    border-radius: var(--input-border-radius);
+    cursor: pointer;
+    box-shadow: 0 0 1em 0 rgba(0, 0, 0, 0.2);
+    font-size: var(--input-font-size);
+    text-decoration: none;
+}
+.nav-button-container {
+    position: absolute;
+    top: 600px;
+    right: 1rem;
+    display: flex;
+    gap: 1rem;
+    z-index: 1000;
+}
+
+.nav-button {
+    display: flex;
+    align-items: center;
+    padding: var(--input-padding);
+    /* background-color: white; */
+    color: white;
+    font-family:'Times New Roman', Times, serif;
+
+    font-weight: bold;
+    border: none;
+    border-radius: var(--input-border-radius);
+    cursor: pointer;
+    box-shadow: 0 0 1em 0 rgba(0, 0, 0, 0.2);
+    font-size: var(--input-font-size);
+    text-decoration: none;
+}
+.header {
+            /* background: linear-gradient(90deg, #C7C5F4, #776BCC); */
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header .header-content {
+            flex: 1;
+            text-align: center;
+        }
+
+        .header img {
+            vertical-align: middle;
+        }
+
+        .header h1 {
+            display: inline;
+            font-size: 36px;
+        }
+
+        .header p {
+            margin: 0;
+            font-size: 18px;
+        }
+        .header .logo {
+            display: inline-block;
+            margin: 0 10px;
+        }
+        .header {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: center;
+        background: linear-gradient(90deg, #bab7ec, #776BCC);
+        color: white;
+        padding: 10px;
+        width: 100%;
+        position: fixed;
+        top: 0;
+        z-index: 1000;
+}
+    .header-content {
+        text-align: center;
+    }
+        .header .logo {
+            display: inline-block;
+            margin: 0 10px;
+        }
+        .header img {
+            vertical-align: middle;
+        }
+
+        .header h1 {
+        font-size: 2em;
+        margin: 0;
+    }
+
+    .header p {
+        margin: 0;
+        font-size: 1em;
+    }
+@media (max-width: 768px) {
+    .header {
+        flex-direction: column;
+    }
+
+    .logo {
+        margin-bottom: 10px;
+    }
+
+    .navbar {
+        margin-top: 20px;
+    }
+
+    .navbar button {
+        padding: 8px 12px;
+        font-size: 0.9em;
+    }
+}
+@media (max-width: 480px) {
+    .header h1 {
+        font-size: 1.5em;
+    }
+
+    .header p {
+        font-size: 0.8em;
+    }
+
+    .navbar button {
+        padding: 6px 10px;
+        font-size: 0.8em;
+    }
+}
+    .navbar {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    width: 100%;
+    background: linear-gradient(90deg, #bab7ec, #6a5eca);
+        padding: 5px;
+    margin-top: 10px;
+}
+    .navbar button {
+    color: white;
+    background: none;
+    border: none;
+    padding: 10px 15px;
+    font: inherit;
+    cursor: pointer;
+    text-decoration: none;
+    white-space: nowrap;
+}
+.navbar button:hover {
+    background-color: #ddd;
+    color: black;
+}
+    .navbar button.active {
+    background-color: #ddd;
+    color: black;
+}
+.navbar button i {
+    margin-right: 5px;
+}
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo">
+            <img src="{% static '/images/mainlogo.png/' %}" alt="Logo" style="width:60px; height:60px;">
+        </div>
+        <div class="header-content">
+            <h1 class="head">SAMAPRAGYA</h1>
+            <p>Empowering with Intelligence</p>
+        </div>
+        <div class="logo">
+            <img src="{% static '/images/mainlogo.png/' %}" alt="Logo" style="width:60px; height:60px;">
+        </div>
+        <div class="navbar">
+            <a href="{% url 'fun' %}" class="button">
+                <button type="button">
+                  <i class="fab fa-twitter"></i> Twitter
+                </button>
+            </a>
+              <a href="{% url 'fun' %}" class="button">
+                <button type="button">
+                    <i class="fab fa-reddit-alien"></i> Reddit
+                </button>
+            </a>
+            
+            <a href="{% url 'fun' %}" class="button">
+                <button type="button">
+                    <i class="fab fa-youtube"></i> YouTube
+                </button>
+            </a>
+            
+            <a href="{% url 'fun' %}" class="button">
+                <button type="button">
+                    <i class="fas fa-newspaper"></i> News
+                </button>
+            </a>
+            
+            <a href="{% url 'fun' %}" class="button">
+                <button type="button">
+                    <i class="fas fa-play-circle"></i> DailyMotion
+                </button>
+            </a>
+            
+            <a href="{% url 'twitter_scraper_form' %}" class="button">
+                <button type="button">
+                    <i class="fas fa-tv"></i> Live Monitoring
+                </button>
+            </a>
+            
+            <a href="{% url 'graph' %}" class="button">
+                <button type="button">
+                    <i class="fas fa-chart-bar"></i> Graph
+                </button>
+            </a>
+            
+            <a href="http://androidcamp.com"  class="button">
+                <button type="button">
+                    <i class="fas fa-search"></i> Web Search
+                </button>
+            </a>
+            
+            <a href="{% url 'index' %}" class="button">
+                <button type="button">
+                    <i class="fab fa-facebook-f"></i> Facebook
+                </button>
+            </a>
+            
+            <a href="{% url 'home' %}"  class="button">
+                <button type="button">
+                    <i class="fab fa-instagram"></i> Instagram
+                </button>
+            </a>
+            
+            <a href="{% url 'medium_scraper' %}"  class="button">
+                <button type="button">
+                    <i class="fab fa-telegram-plane"></i> Telegram
+                </button>
+            </a>
+            
+            <a href="{% url 'fun' %}"  class="button">
+                <button type="button">
+                    <i class="fas fa-home"></i> Home
+                </button>
+            </a>
+            </div>
+    </div>
+    <nav>
+        <div class="nav-button-container">
+            <a href="{% url 'load_saved_handles' %}" class="nav-button">Saved Accounts</a>
+        </div>
+    </nav>
+    <form id="searchForm" class="p-3 mt-3 select-container" action="/monitor/twitter-scraper-form/" method="post">
+        {% csrf_token %}
+        <h1 class="heading">Monitor Accounts</h1>
+        <div>
+            <input type="text" id="search_criteria" name="search_criteria" placeholder="Usernames with '@'" required>
+        </div>
+        <div>
+            <input type="number" id="number_of_tweets" name="number_of_tweets" placeholder="Number of Tweets" required>
+        </div>
+        <input class="btn mt-3" type="submit" value="Submit">
+    </form>
+
+    {% if error_message %}
+        <p>{{ error_message }}</p>
+    {% endif %}
+    <script>
+        setTimeout(function() {
+            alert('Monitor Accounts Page Updated! Go check');
+        }, 1800000);
+    </script>
+</body>
+</html>

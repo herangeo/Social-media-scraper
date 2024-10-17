@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Response Page</title>
+    <style>
+        .saveQuestion {
+            margin-right: 400px;
+            padding: 10px 20px;
+            background-color: blue;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="modal-content">
+        <div id="responseContainer">
+            {% if question %}
+                <p><strong>Q:</strong> {{ question }}</p>
+            {% endif %}
+            {% if answer %}
+                <p><strong>A:</strong> {{ answer }}</p>
+            {% endif %}
+            {% if error %}
+                <p><strong>Error:</strong> {{ error }}</p>
+            {% endif %}
+            <form action="/youtube/savequestions/" method="GET">
+                {% csrf_token %}
+                <input type="hidden" id="videoTitle" name="videoTitle" value="{{ video_title }}">
+                <input type="hidden" id="videoUrl" name="videoURl" value="{{ video_link }}">
+                <input type="hidden" id="videoUrl" name="videoId" value="{{ video_id }}">
+                <input type="hidden" id="questionText" name="questionText" value="{{ question }}">
+                <input type="hidden" id="answer" name="answer" value="{{ answer }}">
+                <button class="saveQuestion" type="submit" id="saveQuestion">Save</button>
+            </form>
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.querySelector('form');
+            form.addEventListener('submit', function(event) {
+                event.preventDefault();
+                
+                const formData = new FormData(form);
+                const xhr = new XMLHttpRequest();
+                xhr.open('GET', form.action + '?' + new URLSearchParams(formData).toString());
+                
+                xhr.onload = function() {
+                    if (xhr.status === 204) {
+                            alert('Success! Question saved successfully.');
+                        } 
+                     else {
+                        alert('Error: Request failed. Please try again.');
+                    }
+                };
+                
+                xhr.onerror = function() {
+                    alert('Error: Network error occurred. Please check your connection and try again.');
+                };
+                
+                xhr.send();
+            });
+        });
+    </script>
+</body>
+</html>

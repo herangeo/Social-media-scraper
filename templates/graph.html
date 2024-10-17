@@ -1,0 +1,270 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Twitter Relationship Graph</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
+
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            margin: 0;
+            background: linear-gradient(90deg, #d4d3eb, #d1ceec);
+            font-family: 'Poppins', sans-serif;
+        }
+        .navbar {
+            width: 100%;
+            height: 80px;
+            background: linear-gradient(90deg, #c2c0e3, #a8a2e1);
+            color: white;
+        }
+        .navbar-light .navbar-brand {
+            color: white;
+            font-weight: bold;
+        }
+        .container {
+            text-align: center;
+            width: 100%;
+            margin-top: 100px;
+        }
+        .graph-container {
+            width: 80%;
+            margin: 20px auto;
+            height: auto; /* Adjust as needed */
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+            margin-bottom: 20px;
+        }
+        h1 {
+            color: rgb(121, 141, 210);
+        }
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .header {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            background: linear-gradient(90deg, #bab7ec, #776BCC);
+            color: white;
+            padding: 10px;
+            width: 100%;
+            position: fixed;
+            top: 0;
+            z-index: 1000;
+        }
+        .header-content {
+            text-align: center;
+        }
+        .header .logo {
+            display: inline-block;
+            margin: 0 10px;
+        }
+        .header img {
+            vertical-align: middle;
+        }
+
+        .header h1 {
+            font-size: 2em;
+            margin: 0;
+        }
+
+        .header p {
+            margin: 0;
+            font-size: 1em;
+        }
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+            }
+
+            .logo {
+                margin-bottom: 10px;
+            }
+
+            .navbar {
+                margin-top: 20px;
+            }
+
+            .navbar button {
+                padding: 8px 12px;
+                font-size: 0.9em;
+            }
+        }
+        @media (max-width: 480px) {
+            .header h1 {
+                font-size: 1.5em;
+            }
+
+            .header p {
+                font-size: 0.8em;
+            }
+
+            .navbar button {
+                padding: 6px 10px;
+                font-size: 0.8em;
+            }
+        }
+        .navbar {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-evenly;
+            width: 100%;
+            background: linear-gradient(90deg, #bab7ec, #6a5eca);
+            padding: 5px;
+            margin-top: 10px;
+        }
+        .navbar button {
+            color: white;
+            background: none;
+            border: none;
+            padding: 10px 15px;
+            font: inherit;
+            cursor: pointer;
+            text-decoration: none;
+            white-space: nowrap;
+        }
+        .navbar button:hover {
+            background-color: #ddd;
+            color: black;
+        }
+        .navbar button.active {
+            background-color: #ddd;
+            color: black;
+        }
+        .navbar button i {
+            margin-right: 5px;
+        }
+        .head {
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo">
+            <img src="{% static '/images/mainlogo.png/' %}" alt="Logo" style="width:60px; height:60px;">
+        </div>
+        <div class="header-content">
+            <h1 class="head">SAMAPRAGYA</h1>
+            <p>Empowering with Intelligence</p>
+        </div>
+        <div class="logo">
+            <img src="{% static '/images/mainlogo.png/' %}" alt="Logo" style="width:60px; height:60px;">
+        </div>
+        <div class="navbar">
+            <a href="{% url 'fun' %}" class="button">
+                <button type="button">
+                  <i class="fab fa-twitter"></i> Twitter
+                </button>
+            </a>
+              <a href="{% url 'fun' %}" class="button">
+                <button type="button">
+                    <i class="fab fa-reddit-alien"></i> Reddit
+                </button>
+            </a>
+            
+            <a href="{% url 'fun' %}" class="button">
+                <button type="button">
+                    <i class="fab fa-youtube"></i> YouTube
+                </button>
+            </a>
+            
+            <a href="{% url 'fun' %}" class="button">
+                <button type="button">
+                    <i class="fas fa-newspaper"></i> News
+                </button>
+            </a>
+            
+            <a href="{% url 'fun' %}" class="button">
+                <button type="button">
+                    <i class="fas fa-play-circle"></i> DailyMotion
+                </button>
+            </a>
+            
+            <a href="{% url 'twitter_scraper_form' %}" class="button">
+                <button type="button">
+                    <i class="fas fa-tv"></i> Live Monitoring
+                </button>
+            </a>
+            
+            <a href="{% url 'graph' %}" class="button">
+                <button type="button">
+                    <i class="fas fa-chart-bar"></i> Graph
+                </button>
+            </a>
+            
+            <a href="http://androidcamp.com"  class="button">
+                <button type="button">
+                    <i class="fas fa-search"></i> Web Search
+                </button>
+            </a>
+            
+            <a href="{% url 'index' %}" class="button">
+                <button type="button">
+                    <i class="fab fa-facebook-f"></i> Facebook
+                </button>
+            </a>
+            
+            <a href="{% url 'home' %}"  class="button">
+                <button type="button">
+                    <i class="fab fa-instagram"></i> Instagram
+                </button>
+            </a>
+            
+            <a href="{% url 'medium_scraper' %}"  class="button">
+                <button type="button">
+                    <i class="fab fa-telegram-plane"></i> Telegram
+                </button>
+            </a>
+            
+            <a href="{% url 'fun' %}"  class="button">
+                <button type="button">
+                    <i class="fas fa-home"></i> Home
+                </button>
+            </a>
+            </div>
+    </div>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">STATISTICS</a>
+    </nav>
+
+    <!-- Main content -->
+    <div class="container">
+        <h1 class="mt-4"><img src="{% static '/images/twitter.png/' %}" alt="" style="height: 8vh; width: 4vw;">Graph</h1>
+        
+        <!-- Sentiment Chart -->
+        <div class="graph-container">
+            <img src="data:image/png;base64,{{ image_base64 }}" alt="Keyword Chart">
+        </div>
+        
+        <!-- Twitter Relationship Graph -->
+        <div class="graph-container">
+            <img id="twitterGraph" src="{{ graph_html|safe }}" alt="Twitter Relationship Graph">
+        </div>
+
+    </div>
+    
+    <!-- Bootstrap JS, Popper.js, and jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</body>
+</html>
